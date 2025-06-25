@@ -1,0 +1,30 @@
+{
+  "balancing_config": {
+    "pid": {
+      "output_limit": 10,
+      "disabled": true,
+      "kd": {
+        "gain": 1,
+        "limit": 1
+      },
+      "ki": {
+        "gain": 1,
+        "limit": 1
+      },
+      "kp": {
+        "gain": 1,
+        "limit": 1
+      }
+    },
+    "selection_strategy": {
+      "count": 20,
+      "kw_amount": 100
+    },
+    "sleep_amount_millis": 100
+  },
+  "power_reduction_request": {
+    "grid_zone": "DK2",
+    "power_reduction_kw": 50,
+    "requester": "EnergiNet"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "change_status_time_range": {
+    "max": 3.0,
+    "min": 1.0
+  },
+  "charging_time_range": {
+    "max": 120.0,
+    "min": 60.0
+  },
+  "current_type": "AC",
+  "evse_count": 100,
+  "evse_status_cycle": [
+    "Available",
+    "Preparing",
+    "Charging",
+    "SuspendedEV",
+    "Finishing"
+  ],
+  "master_update_delay": {
+    "max": 0.0,
+    "min": 0.0
+  },
+  "on_start_charge_update_range": {
+    "max": 0,
+    "min": 0
+  },
+  "on_start_time_update_interval_seconds": {
+    "max": 1.5,
+    "min": 0.5
+  },
+  "power_change_amount": {
+    "max": 2.0,
+    "min": 1.0
+  },
+  "power_change_interval_seconds": {
+    "max": 1.5,
+    "min": 1.0
+  },
+  "power_grid_zone": "DK2",
+  "power_update_interval_seconds": {
+    "max": 1.5,
+    "min": 1.0
+  },
+  "set_limit_failure_rate": 0,
+  "start_power_range": {
+    "max": 22.0,
+    "min": 22.0
+  }
+}
