@@ -1,11 +1,11 @@
 {
   "change_status_time_range": {
-    "max": 3.0,
-    "min": 1.0
+    "min": 5.0,
+    "max": 30.0
   },
   "charging_time_range": {
-    "max": 120.0,
-    "min": 60.0
+    "min": 900.0,
+    "max": 3600.0
   },
   "current_type": "AC",
   "evse_count": 100,
@@ -17,33 +17,33 @@
     "Finishing"
   ],
   "master_update_delay": {
-    "max": 0.0,
-    "min": 0.0
+    "min": 0.1,
+    "max": 1.0
   },
   "on_start_charge_update_range": {
-    "max": 0,
-    "min": 0
+    "min": 1,
+    "max": 3
   },
   "on_start_time_update_interval_seconds": {
-    "max": 1.5,
-    "min": 0.5
+    "min": 1.0,
+    "max": 5.0
   },
   "power_change_amount": {
-    "max": 2.0,
-    "min": 1.0
+    "min": 0.5,
+    "max": 3.5
   },
   "power_change_interval_seconds": {
-    "max": 1.5,
-    "min": 1.0
+    "min": 2.0,
+    "max": 4.0
   },
   "power_grid_zone": "DK2",
   "power_update_interval_seconds": {
-    "max": 1.5,
-    "min": 1.0
+    "min": 0.5,
+    "max": 1.0
   },
-  "set_limit_failure_rate": 0,
+  "set_limit_failure_rate": 0.0,
   "start_power_range": {
-    "max": 22.0,
-    "min": 22.0
+    "min": 3.7,
+    "max": 22.0
   }
 }

@@ -1,30 +1,30 @@
 {
   "balancing_config": {
     "pid": {
-      "output_limit": 10,
-      "disabled": true,
-      "kd": {
-        "gain": 1,
-        "limit": 1
+      "output_limit": 20,
+      "disabled": false,
+      "kp": {
+        "gain": 0.8,
+        "limit": 10
       },
       "ki": {
-        "gain": 1,
-        "limit": 1
+        "gain": 0.1,
+        "limit": 5
       },
-      "kp": {
-        "gain": 1,
-        "limit": 1
+      "kd": {
+        "gain": 0.05,
+        "limit": 5
       }
     },
     "selection_strategy": {
-      "count": 20,
+      "count": 25,
       "kw_amount": 100
     },
-    "sleep_amount_millis": 100
+    "sleep_amount_millis": 50
   },
   "power_reduction_request": {
     "grid_zone": "DK2",
-    "power_reduction_kw": 50,
+    "power_reduction_kw": 100,
     "requester": "EnergiNet"
   }
 }

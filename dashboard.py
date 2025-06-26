@@ -276,6 +276,7 @@ def update_plot(selected_folder, selected_file):
 
     # If the DataFrame is empty (e.g., file was empty or only had headers),
     # return an empty plot with a message
+    # If the DataFrame is empty, return an informative plot
     if df.empty:
         fig = px.line(
             title=f"No data available for '{selected_file}' in '{selected_folder}'."
@@ -302,116 +303,49 @@ def update_plot(selected_folder, selected_file):
         )
         return fig
 
-    # Create the line plot using Plotly Express
+    # Ensure timestamp is parsed as datetime
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+    # Compute time elapsed in seconds
+    df["time_elapsed_sec"] = (df["timestamp"] - df["timestamp"].iloc[0]).dt.total_seconds()
+
+    # Create the line plot using elapsed time
     fig = px.line(
         df,
-        x="timestamp",
+        x="time_elapsed_sec",
         y="total_error",
         title=f"Total Error Over Time – {selected_folder} / {selected_file}",
-        labels={"total_error": "Total Error", "timestamp": "Time"},
-        line_shape="linear",  # Connect points with straight lines
-        render_mode="svg",  # For better performance on many points
+        labels={"total_error": "Total Error", "time_elapsed_sec": "Time Elapsed (s)"},
+        line_shape="linear",
+        render_mode="svg",
+        markers=True,
     )
 
-    # Update layout for better aesthetics
+    # Update layout
     fig.update_layout(
-        transition_duration=0,  # Removed the sliding motion by setting duration to 0
+        transition_duration=0,
         height=600,
         margin={"l": 40, "r": 40, "t": 60, "b": 40},
-        plot_bgcolor="#ffffff",  # White plot background
-        paper_bgcolor="#f0f2f5",  # Light gray paper background
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#f0f2f5",
         font_color="#333",
         title_font_size=24,
         xaxis_title_font_size=18,
         yaxis_title_font_size=18,
-        hovermode="x unified",  # Show hover information for all traces at a given x-value
+        hovermode="x unified",
     )
+
     # Customize axes
     fig.update_xaxes(
         showgrid=True,
         gridwidth=1,
         gridcolor="#e0e0e0",
-        tickformat="%Y-%m-%d %H:%M",  # Example timestamp format
+        title="Time Elapsed (seconds)",
     )
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor="#e0e0e0")
 
     return fig
 
-
 if __name__ == "__main__":
-    # --- Dummy Data Generation for Local Testing ---
-    # This section creates a consts.py and dummy CSV files
-    # if they don't already exist, so you can run the app directly.
-
-    # Ensure consts.py exists with CSV_OUT_FOLDER defined
-    consts_file_path = "consts.py"
-    if not os.path.exists(consts_file_path):
-        print(f"Creating dummy {consts_file_path}...")
-        with open(consts_file_path, "w") as f:
-            f.write(f"CSV_OUT_FOLDER = '{CSV_OUT_FOLDER}'\n")
-        # No need to reload consts explicitly here because CSV_OUT_FOLDER is already set globally
-        # and load_reports uses that global variable.
-
-    # Ensure the base CSV output folder exists
-    Path(CSV_OUT_FOLDER).mkdir(parents=True, exist_ok=True)
-
-    # Create dummy request folders
-    dummy_folders = ["request_folder_1", "request_folder_2", "request_folder_3"]
-    for folder in dummy_folders:
-        # Correctly create folder paths using Path objects
-        (Path(CSV_OUT_FOLDER) / folder).mkdir(parents=True, exist_ok=True)
-
-    # Create dummy CSV files with data
-    now = datetime.now()
-
-    # Data for request_folder_1
-    file_path_alpha = Path(CSV_OUT_FOLDER) / "request_folder_1" / "report_alpha.csv"
-    with open(file_path_alpha, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["timestamp", "total_error", "total_reduction"])
-        for i in range(10):
-            # Using datetime.timedelta instead of pd.Timedelta to avoid NaTType issues
-            timestamp = (now - timedelta(minutes=i * 10)).isoformat(timespec="seconds")
-            writer.writerow([
-                timestamp,
-                100 - i * 5 + (i % 3),
-                5 + i,
-            ])  # Added slight variation
-
-    file_path_beta = Path(CSV_OUT_FOLDER) / "request_folder_1" / "report_beta.csv"
-    with open(file_path_beta, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["timestamp", "total_error", "total_reduction"])
-        for i in range(12):
-            # Using datetime.timedelta instead of pd.Timedelta to avoid NaTType issues
-            timestamp = (now - timedelta(minutes=i * 8)).isoformat(timespec="seconds")
-            writer.writerow([
-                timestamp,
-                50 + i * 2 - (i % 2),
-                20 - i,
-            ])  # Added slight variation
-
-    # Data for request_folder_2
-    file_path_charlie = Path(CSV_OUT_FOLDER) / "request_folder_2" / "report_charlie.csv"
-    with open(file_path_charlie, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["timestamp", "total_error", "total_reduction"])
-        for i in range(15):
-            # Using datetime.timedelta instead of pd.Timedelta to avoid NaTType issues
-            timestamp = (now - timedelta(hours=i)).isoformat(timespec="seconds")
-            writer.writerow([
-                timestamp,
-                200 - i * 10 + (i % 5),
-                10 + i * 2,
-            ])  # Added slight variation
-
-    file_path_empty = Path(CSV_OUT_FOLDER) / "request_folder_2" / "empty_report.csv"
-    with open(file_path_empty, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["timestamp", "total_error", "total_reduction"])  # Only headers
-
-    # No files in request_folder_3, to test empty folder scenario
-
-    print(f"\nDummy data created in '{CSV_OUT_FOLDER}' for testing.")
     print("Starting Dash server...")
     app.run_server(debug=True)
